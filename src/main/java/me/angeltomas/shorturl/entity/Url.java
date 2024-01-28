@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import me.angeltomas.shorturl.entity.user.User;
 
 import java.time.LocalDate;
 
