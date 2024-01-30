@@ -1,9 +1,10 @@
-package me.angeltomas.shorturl.entity.user;
+package me.angeltomas.shorturl.persistence.entity.user;
 
 
 import jakarta.persistence.*;
 import lombok.*;
-import me.angeltomas.shorturl.entity.Url;
+
+import me.angeltomas.shorturl.persistence.entity.Url;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter

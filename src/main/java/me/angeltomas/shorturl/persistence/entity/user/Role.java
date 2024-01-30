@@ -1,5 +1,5 @@
-package me.angeltomas.shorturl.entity.user;
+package me.angeltomas.shorturl.persistence.entity.user;
 
 public enum Role {
-    UER, ADMIN
+    USER, ADMIN
 }
