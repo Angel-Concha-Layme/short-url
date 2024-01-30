@@ -1,2 +1,6 @@
-package me.angeltomas.shorturl.dto.response;public record AuthenticationResponseDTO() {
+package me.angeltomas.shorturl.dto.response;
+
+public record AuthenticationResponseDTO(
+        String token
+) {
 }
