@@ -1,4 +1,4 @@
-package me.angeltomas.shorturl.security.config;
+package me.angeltomas.shorturl.security;
 
 
 import lombok.RequiredArgsConstructor;
