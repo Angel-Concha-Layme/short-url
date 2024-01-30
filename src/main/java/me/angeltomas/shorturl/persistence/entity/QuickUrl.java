@@ -1,4 +1,4 @@
-package me.angeltomas.shorturl.entity;
+package me.angeltomas.shorturl.persistence.entity;
 
 
 import jakarta.persistence.*;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "quick_url")
+@Table(name = "quick_urls")
 @Setter
 @Getter
 @AllArgsConstructor

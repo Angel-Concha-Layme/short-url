@@ -1,16 +1,16 @@
-package me.angeltomas.shorturl.entity;
+package me.angeltomas.shorturl.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import me.angeltomas.shorturl.entity.user.User;
+import me.angeltomas.shorturl.persistence.entity.user.User;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "url")
+@Table(name = "urls")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -32,7 +32,7 @@ public class Url {
 
     private LocalDate updatedAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }
