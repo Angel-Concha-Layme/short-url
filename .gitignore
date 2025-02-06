@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Custom files ###
+/venv/
+/modules/shorturl-api/src/main/resources/application-dev.properties
