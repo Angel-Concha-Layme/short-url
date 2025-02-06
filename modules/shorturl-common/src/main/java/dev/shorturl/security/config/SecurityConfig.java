@@ -25,10 +25,8 @@ import java.util.List;
 public class SecurityConfig {
 
   private static final String[] WHITE_LIST_URL = {
+      "/",
       "/api/auth/**",
-      "/v2/api-docs",
-      "/v3/api-docs",
-      "/v3/api-docs/**",
       "/swagger-resources",
       "/swagger-resources/**",
       "/configuration/ui",
@@ -86,7 +84,6 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(WHITE_LIST_URL).permitAll()
-            .requestMatchers("/error").permitAll()
             .anyRequest().authenticated()
         )
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
