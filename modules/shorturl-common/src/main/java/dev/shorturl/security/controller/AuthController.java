@@ -2,6 +2,7 @@ package dev.shorturl.security.controller;
 
 import dev.shorturl.security.dto.AuthenticationRequestDTO;
 import dev.shorturl.security.dto.AuthenticationResponseDTO;
+import dev.shorturl.security.dto.EmailVerificationRequestDTO;
 import dev.shorturl.security.dto.RegisterRequestDTO;
 import dev.shorturl.security.service.AuthService;
 import jakarta.annotation.security.PermitAll;
@@ -31,4 +32,10 @@ public class AuthController {
     return ResponseEntity.ok(this.authservice.authenticate(authenticationRequestDTO));
   }
 
+  @PostMapping("/verify")
+  @PermitAll
+  public ResponseEntity<String> verifyEmail(@RequestBody EmailVerificationRequestDTO verificationDTO) {
+    this.authservice.verifyEmail(verificationDTO);
+    return ResponseEntity.ok("Email verified successfully. You can now login.");
+  }
 }
