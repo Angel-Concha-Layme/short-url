@@ -4,6 +4,7 @@ import dev.shorturl.security.dto.AuthenticationRequestDTO;
 import dev.shorturl.security.dto.AuthenticationResponseDTO;
 import dev.shorturl.security.dto.EmailVerificationRequestDTO;
 import dev.shorturl.security.dto.RegisterRequestDTO;
+import dev.shorturl.security.exception.*;
 import dev.shorturl.security.model.User;
 import dev.shorturl.security.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,7 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 @Service
 public class AuthService {
@@ -32,9 +33,9 @@ public class AuthService {
     this.emailService = emailService;
   }
 
-  public AuthenticationResponseDTO register(RegisterRequestDTO registerRequestDTO) {
+  public void register(RegisterRequestDTO registerRequestDTO) {
     if (userRepository.findByEmail(registerRequestDTO.email()).isPresent()) {
-      throw new RuntimeException("Email is already registered");
+      throw new EmailAlreadyExistsException("Email is already registered");
     }
 
     var user = new User();
@@ -48,26 +49,34 @@ public class AuthService {
     user.setVerificationCode(verificationCode);
     user.setEmailVerified(false);
 
-    var savedUser = userRepository.save(user);
+    userRepository.save(user);
 
     emailService.sendVerificationEmail(user.getEmail(), verificationCode);
-
-    return new AuthenticationResponseDTO(null, null);
   }
 
-  public void verifyEmail(EmailVerificationRequestDTO verificationDTO) {
+  public AuthenticationResponseDTO verifyEmail(EmailVerificationRequestDTO verificationDTO) {
     var user = userRepository.findByEmail(verificationDTO.email())
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+    if (user.isEmailVerified()) {
+      throw new EmailAlreadyVerifiedException("Email is already verified");
+    }
 
     if (!user.getVerificationCode().equals(verificationDTO.verificationCode())) {
-      throw new RuntimeException("Invalid verification code");
+      throw new InvalidVerificationCodeException("Invalid verification code");
     }
 
     user.setEmailVerified(true);
     user.setVerificationCode(null);
-    userRepository.save(user);
+    var savedUser = userRepository.save(user);
+    var jwtToken = jwtService.generateToken(savedUser);
+    var refreshToken = jwtService.generateRefreshToken(savedUser);
 
-    emailService.sendWelcomeEmail(user.getEmail(), user.getVerificationCode());
+    tokenService.saveUserToken(savedUser, jwtToken);
+
+    emailService.sendWelcomeEmail(user.getEmail(), user.getFirstName());
+
+    return new AuthenticationResponseDTO(jwtToken, refreshToken);
   }
 
   public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO authenticationRequestDTO) {
@@ -78,10 +87,10 @@ public class AuthService {
         )
     );
     var user = userRepository.findByEmail(authenticationRequestDTO.email())
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
 
     if (!user.isEmailVerified()) {
-      throw new RuntimeException("Email not verified");
+      throw new EmailNotVerifiedException("Email not verified");
     }
 
     var jwtToken = jwtService.generateToken(user);
@@ -92,7 +101,7 @@ public class AuthService {
     return new AuthenticationResponseDTO(jwtToken, refreshToken);
   }
 
-  private String generateVerificationCode() {
-    return String.format("%06d", new Random().nextInt(999999));
+  public static String generateVerificationCode() {
+    return String.format("%06d", new SecureRandom().nextInt(1_000_000));
   }
 }

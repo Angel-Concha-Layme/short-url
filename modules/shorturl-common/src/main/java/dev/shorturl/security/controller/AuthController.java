@@ -7,10 +7,7 @@ import dev.shorturl.security.dto.RegisterRequestDTO;
 import dev.shorturl.security.service.AuthService;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -23,8 +20,9 @@ public class AuthController {
 
   @PostMapping("/register")
   @PermitAll
-  public ResponseEntity<AuthenticationResponseDTO> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
-    return ResponseEntity.ok(this.authservice.register(registerRequestDTO));
+  public ResponseEntity<String> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
+    this.authservice.register(registerRequestDTO);
+    return ResponseEntity.ok("Your account has been successfully registered. Please check your email to verify your account before logging in.");
   }
 
   @PostMapping("/authenticate")
@@ -32,10 +30,9 @@ public class AuthController {
     return ResponseEntity.ok(this.authservice.authenticate(authenticationRequestDTO));
   }
 
-  @PostMapping("/verify")
+  @GetMapping("/verify")
   @PermitAll
-  public ResponseEntity<String> verifyEmail(@RequestBody EmailVerificationRequestDTO verificationDTO) {
-    this.authservice.verifyEmail(verificationDTO);
-    return ResponseEntity.ok("Email verified successfully. You can now login.");
+  public ResponseEntity<AuthenticationResponseDTO> verifyEmail(@RequestBody EmailVerificationRequestDTO verificationDTO) {
+    return ResponseEntity.ok(this.authservice.verifyEmail(verificationDTO));
   }
 }
