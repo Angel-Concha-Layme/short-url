@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .verification-code {
+            background-color: #f5f5f5;
+            padding: 15px;
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/email-layout :: header"></div>
+
+<h2>Welcome to <span th:text="${appName}">Our App</span>!</h2>
+
+<p>Your verification code is:</p>
+<div class="verification-code">
+    <strong th:text="${verificationCode}">123456</strong>
+</div>
+
+<p>If you didn't request this code, you can safely ignore this email.</p>
+
+<div th:replace="fragments/email-layout :: footer"></div>
+</body>
+</html>

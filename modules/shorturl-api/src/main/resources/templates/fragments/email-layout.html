@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Template</title>
+</head>
+<body>
+
+<div th:fragment="header">
+    <div style="background-color: #f8f9fa; padding: 20px; text-align: center;">
+        <img src="https://win98icons.alexmeub.com/icons/png/internet_connection_wiz-4.png" alt="Logo" style="max-width: 200px;"/>
+    </div>
+</div>
+
+<div th:fragment="footer">
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+        <p style="color: #666; font-size: 14px;">
+            Best regards,<br/>
+            The <span th:text="${appName}">Short URL</span> Team
+        </p>
+        <p style="color: #999; font-size: 12px;">
+            © 2025 <span th:text="${appName}">Short URL</span>. All rights reserved.
+        </p>
+    </div>
+</div>
+</body>
+</html>

@@ -50,8 +50,8 @@ public class AuthService {
     user.setEmailVerified(false);
 
     userRepository.save(user);
-
     emailService.sendVerificationEmail(user.getEmail(), verificationCode);
+
   }
 
   public AuthenticationResponseDTO verifyEmail(EmailVerificationRequestDTO verificationDTO) {

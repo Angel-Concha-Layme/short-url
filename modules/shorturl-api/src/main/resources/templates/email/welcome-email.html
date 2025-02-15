@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .welcome-message {
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/email-layout :: header"></div>
+
+<h2>Hi <span th:text="${firstName}">User</span>!</h2>
+
+<div class="welcome-message">
+    <p>Welcome to <span th:text="${appName}">Our App</span>! We're excited to have you on board.</p>
+</div>
+
+<p>You can now log in to your account and start using our services.</p>
+
+<p>If you have any questions, feel free to reply to this email.</p>
+
+<div th:replace="fragments/email-layout :: footer"></div>
+
+</body>
+</html>
