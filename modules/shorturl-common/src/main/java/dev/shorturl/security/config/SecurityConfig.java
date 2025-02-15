@@ -1,6 +1,7 @@
 package dev.shorturl.security.config;
 
 import dev.shorturl.security.service.CustomOAuth2UserService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
@@ -39,20 +41,19 @@ public class SecurityConfig {
   private final JwtAuthenticationFilter jwtAuthFilter;
   private final LogoutHandler logoutHandler;
   private final CustomOAuth2UserService customOAuth2UserService;
-  private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler;
+  private final @Qualifier("customOAuth2LoginSuccessHandler") AuthenticationSuccessHandler oauth2LoginSuccessHandler;
   private final org.springframework.security.authentication.AuthenticationProvider authenticationProvider;
 
   public SecurityConfig(
       JwtAuthenticationFilter jwtAuthFilter,
       LogoutHandler logoutHandler,
-      CustomOAuth2UserService customOAuth2UserService,
-      CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler,
+      CustomOAuth2UserService customOAuth2UserService, AuthenticationSuccessHandler oauth2LoginSuccessHandler,
       org.springframework.security.authentication.AuthenticationProvider authenticationProvider
   ) {
     this.jwtAuthFilter = jwtAuthFilter;
     this.logoutHandler = logoutHandler;
     this.customOAuth2UserService = customOAuth2UserService;
-    this.customOAuth2LoginSuccessHandler = customOAuth2LoginSuccessHandler;
+    this.oauth2LoginSuccessHandler = oauth2LoginSuccessHandler;
     this.authenticationProvider = authenticationProvider;
   }
 
@@ -69,7 +70,7 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .oauth2Login(oauth -> oauth
             .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
-            .successHandler(customOAuth2LoginSuccessHandler)
+            .successHandler(oauth2LoginSuccessHandler)
         );
 
     return http.build();
