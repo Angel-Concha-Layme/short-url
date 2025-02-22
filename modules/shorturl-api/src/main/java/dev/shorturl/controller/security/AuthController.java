@@ -1,9 +1,9 @@
-package dev.shorturl.security.controller;
+package dev.shorturl.controller.security;
 
 import dev.shorturl.security.dto.AuthenticationRequestDTO;
 import dev.shorturl.security.dto.AuthenticationResponseDTO;
 import dev.shorturl.security.dto.RegisterRequestDTO;
-import dev.shorturl.security.service.AuthService;
+import dev.shorturl.services.AuthService;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
