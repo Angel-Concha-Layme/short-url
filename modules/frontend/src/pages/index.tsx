@@ -1,5 +1,6 @@
-import ChangeThemeSwitch from '@/components/changeTheme';
-import Head from 'next/head';
+import { Container } from "@mui/material";
+import Head from "next/head";
+import Header from "@/components/header";
 
 export default function Home() {
   return (
@@ -11,9 +12,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <ChangeThemeSwitch />
-      </main>
+      <Header />
+      <Container component="main" maxWidth="xl"></Container>
     </>
   );
 }
