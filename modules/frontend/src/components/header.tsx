@@ -70,7 +70,14 @@ function ResponsiveAppBar() {
           <Box>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu}>
-                <Avatar variant="rounded" sx={{ width: 30, height: 30 }} />
+                <Avatar
+                  sx={{
+                    color: "white",
+                    bgcolor: "transparent",
+                    width: 30,
+                    height: 30,
+                  }}
+                />
               </IconButton>
             </Tooltip>
             <Menu
