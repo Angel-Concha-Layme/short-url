@@ -10,7 +10,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LinkIcon from "@mui/icons-material/Link";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import ChangeThemeButton from "./changeTheme";
+import ChangeThemeButton from "../../ui/changeTheme";
 import { Container, Divider } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import DashboardIcon from "@mui/icons-material/Dashboard";
