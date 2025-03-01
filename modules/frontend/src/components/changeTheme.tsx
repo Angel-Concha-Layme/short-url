@@ -3,7 +3,7 @@ import { IconButton, useColorScheme } from "@mui/material";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
-export default function ChangeThemeSwitch() {
+export default function ChangeThemeButton() {
   const { mode, setMode } = useColorScheme();
 
   return (

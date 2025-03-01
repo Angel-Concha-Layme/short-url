@@ -10,7 +10,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LinkIcon from "@mui/icons-material/Link";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import ChangeThemeSwitch from "./changeTheme";
+import ChangeThemeButton from "./changeTheme";
 import { Container } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -63,7 +63,7 @@ function ResponsiveAppBar() {
             >
               <GitHubIcon />
             </IconButton>
-            <ChangeThemeSwitch />
+            <ChangeThemeButton />
           </Box>
 
           {/* TODO: Add link navigation to the MenuItems */}
