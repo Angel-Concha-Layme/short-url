@@ -11,7 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import LinkIcon from "@mui/icons-material/Link";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import ChangeThemeButton from "./changeTheme";
-import { Container } from "@mui/material";
+import { Container, Divider } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -117,6 +117,7 @@ function ResponsiveAppBar() {
                 <SettingsIcon />
                 Settings
               </MenuItem>
+              <Divider />
               <MenuItem
                 sx={{ display: "flex", alignItems: "center", gap: 1 }}
                 onClick={handleCloseUserMenu}
@@ -124,6 +125,7 @@ function ResponsiveAppBar() {
                 <BugReportIcon />
                 Report a Bug
               </MenuItem>
+              <Divider />
               <MenuItem
                 sx={{ display: "flex", alignItems: "center", gap: 1 }}
                 onClick={handleCloseUserMenu}
