@@ -12,6 +12,11 @@ import LinkIcon from "@mui/icons-material/Link";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import ChangeThemeSwitch from "./changeTheme";
 import { Container } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import SettingsIcon from "@mui/icons-material/Settings";
+import BugReportIcon from "@mui/icons-material/BugReport";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -61,22 +66,20 @@ function ResponsiveAppBar() {
             <ChangeThemeSwitch />
           </Box>
 
-          {/* TODO: Continue with changing this part according to the expected ui  */}
+          {/* TODO: Add link navigation to the MenuItems */}
           <Box>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu}>
-                <Avatar />
+                <Avatar variant="rounded" sx={{ width: 30, height: 30 }} />
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
+              sx={{ width: 320, maxWidth: "100%" }}
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: "top",
+                vertical: "bottom",
                 horizontal: "right",
               }}
-              keepMounted
               transformOrigin={{
                 vertical: "top",
                 horizontal: "right",
@@ -84,13 +87,43 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>
-                    {setting}
-                  </Typography>
-                </MenuItem>
-              ))}
+              <MenuItem
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                onClick={handleCloseUserMenu}
+              >
+                <HomeIcon />
+                Home
+              </MenuItem>
+
+              <MenuItem
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                onClick={handleCloseUserMenu}
+              >
+                <DashboardIcon />
+                Dashboard
+              </MenuItem>
+
+              <MenuItem
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                onClick={handleCloseUserMenu}
+              >
+                <SettingsIcon />
+                Settings
+              </MenuItem>
+              <MenuItem
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                onClick={handleCloseUserMenu}
+              >
+                <BugReportIcon />
+                Report a Bug
+              </MenuItem>
+              <MenuItem
+                sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                onClick={handleCloseUserMenu}
+              >
+                <LogoutIcon />
+                Log Out
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
