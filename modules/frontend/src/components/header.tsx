@@ -17,8 +17,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import SettingsIcon from "@mui/icons-material/Settings";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import LogoutIcon from "@mui/icons-material/Logout";
-
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import Link from "next/link";
 
 function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
@@ -66,7 +65,6 @@ function ResponsiveAppBar() {
             <ChangeThemeButton />
           </Box>
 
-          {/* TODO: Add link navigation to the MenuItems */}
           <Box>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu}>
@@ -97,6 +95,8 @@ function ResponsiveAppBar() {
               <MenuItem
                 sx={{ display: "flex", alignItems: "center", gap: 1 }}
                 onClick={handleCloseUserMenu}
+                component={Link}
+                href="/"
               >
                 <HomeIcon />
                 Home
@@ -105,6 +105,8 @@ function ResponsiveAppBar() {
               <MenuItem
                 sx={{ display: "flex", alignItems: "center", gap: 1 }}
                 onClick={handleCloseUserMenu}
+                component={Link}
+                href="/dashboard"
               >
                 <DashboardIcon />
                 Dashboard
@@ -113,6 +115,8 @@ function ResponsiveAppBar() {
               <MenuItem
                 sx={{ display: "flex", alignItems: "center", gap: 1 }}
                 onClick={handleCloseUserMenu}
+                component={Link}
+                href="/settings"
               >
                 <SettingsIcon />
                 Settings
@@ -121,6 +125,9 @@ function ResponsiveAppBar() {
               <MenuItem
                 sx={{ display: "flex", alignItems: "center", gap: 1 }}
                 onClick={handleCloseUserMenu}
+                component="a"
+                href="https://github.com/Angel-Concha-Layme/short-url/issues"
+                target="_blank"
               >
                 <BugReportIcon />
                 Report a Bug
@@ -129,6 +136,8 @@ function ResponsiveAppBar() {
               <MenuItem
                 sx={{ display: "flex", alignItems: "center", gap: 1 }}
                 onClick={handleCloseUserMenu}
+                component={Link}
+                href="/logout"
               >
                 <LogoutIcon />
                 Log Out
