@@ -43,7 +43,7 @@ function ResponsiveAppBar() {
               fontWeight: 700,
               color: "inherit",
               textDecoration: "none",
-              gap: 1,
+              gap: 2,
             }}
           >
             <LinkIcon />
@@ -54,6 +54,7 @@ function ResponsiveAppBar() {
             <IconButton
               href="https://github.com/Angel-Concha-Layme/short-url"
               target="_blank"
+              color="inherit"
             >
               <GitHubIcon />
             </IconButton>

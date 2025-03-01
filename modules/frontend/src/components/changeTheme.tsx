@@ -7,7 +7,10 @@ export default function ChangeThemeSwitch() {
   const { mode, setMode } = useColorScheme();
 
   return (
-    <IconButton onClick={() => setMode(mode === "dark" ? "light" : "dark")}>
+    <IconButton
+      color="inherit"
+      onClick={() => setMode(mode === "dark" ? "light" : "dark")}
+    >
       {mode === "dark" ? <DarkModeIcon /> : <LightModeIcon />}
     </IconButton>
   );
