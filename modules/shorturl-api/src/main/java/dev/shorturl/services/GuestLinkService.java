@@ -1,6 +1,6 @@
 package dev.shorturl.services;
 
-import dev.shorturl.dto.guestLink.GuestLinkRequestDTO;
+import dev.shorturl.dto.guestlink.GuestlinkRequestDTO;
 import dev.shorturl.model.GuestLink;
 import dev.shorturl.repository.GuestLinkRepository;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class GuestLinkService {
     this.slugService = slugService;
   }
 
-  public GuestLink createGuestLink(GuestLinkRequestDTO request) {
+  public GuestLink createGuestLink(GuestlinkRequestDTO request) {
     GuestLink guestLink = new GuestLink();
     guestLink.setUrl(request.url());
     guestLink.setSlug(this.slugService.generateSlug());
