@@ -1,5 +1,6 @@
 package dev.shorturl.services;
 
+import dev.shorturl.security.dto.ChangePasswordRequestDTO;
 import dev.shorturl.model.AppUser;
 import dev.shorturl.repository.AppUserRepository;
 import dev.shorturl.security.dto.AuthenticationRequestDTO;
@@ -73,5 +74,19 @@ public class AuthService {
     tokenService.saveUserToken(user, jwtToken);
 
     return new AuthenticationResponseDTO(jwtToken, refreshToken);
+  }
+
+  public Boolean changePassword(ChangePasswordRequestDTO changePasswordRequestDTO) {
+    var user = userRepository.findByEmail(changePasswordRequestDTO.email())
+        .orElseThrow();
+
+    if (!passwordEncoder.matches(changePasswordRequestDTO.oldPassword(), user.getPassword())) {
+      throw new RuntimeException("Invalid old password");
+    }
+
+    user.setPassword(passwordEncoder.encode(changePasswordRequestDTO.newPassword()));
+    userRepository.save(user);
+
+    return true;
   }
 }
