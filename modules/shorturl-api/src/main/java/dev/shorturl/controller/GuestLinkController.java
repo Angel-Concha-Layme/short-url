@@ -1,7 +1,7 @@
 package dev.shorturl.controller;
 
-import dev.shorturl.dto.guestLink.GuestLinkResponseDTO;
-import dev.shorturl.dto.guestLink.GuestLinkRequestDTO;
+import dev.shorturl.dto.guestlink.GuestlinkResponseDTO;
+import dev.shorturl.dto.guestlink.GuestlinkRequestDTO;
 import dev.shorturl.services.GuestLinkService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,8 @@ public class GuestLinkController {
   }
 
   @PostMapping
-  public ResponseEntity<GuestLinkResponseDTO> createGuestLink(@Valid @RequestBody GuestLinkRequestDTO request) {
-    GuestLinkResponseDTO guestLinkResponseDTO = GuestLinkResponseDTO.of(this.guestLinkService.createGuestLink(request));
+  public ResponseEntity<GuestlinkResponseDTO> createGuestLink(@Valid @RequestBody GuestlinkRequestDTO request) {
+    GuestlinkResponseDTO guestLinkResponseDTO = GuestlinkResponseDTO.of(this.guestLinkService.createGuestLink(request));
     return ResponseEntity.status(HttpStatus.CREATED).body(guestLinkResponseDTO);
   }
 }
