@@ -1,11 +1,13 @@
-package dev.shorturl.controller.security;
+package dev.shorturl.controller;
 
+import dev.shorturl.security.dto.ChangePasswordRequestDTO;
 import dev.shorturl.security.dto.AuthenticationRequestDTO;
 import dev.shorturl.security.dto.AuthenticationResponseDTO;
 import dev.shorturl.security.dto.RegisterRequestDTO;
 import dev.shorturl.services.AuthService;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,4 +33,9 @@ public class AuthController {
     return ResponseEntity.ok(this.authservice.authenticate(authenticationRequestDTO));
   }
 
+  @PostMapping("/change-password")
+  @PreAuthorize("hasRole('ROLE_USER')")
+  public ResponseEntity<Boolean> changePassword(@RequestBody ChangePasswordRequestDTO changePasswordRequestDTO) {
+    return ResponseEntity.ok(this.authservice.changePassword(changePasswordRequestDTO));
+  }
 }
