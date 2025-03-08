@@ -51,10 +51,10 @@ CREATE TABLE tags (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     color VARCHAR(50),
-    user_id BIGINT NOT NULL,
+    user_link_id BIGINT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE (name, user_id)
+    FOREIGN KEY (user_link_id) REFERENCES user_links(id) ON DELETE CASCADE,
+    UNIQUE (name, user_link_id)
 );
 
 CREATE TABLE link_tags (
