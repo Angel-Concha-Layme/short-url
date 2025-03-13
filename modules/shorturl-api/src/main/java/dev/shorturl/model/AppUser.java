@@ -26,4 +26,7 @@ public class AppUser {
 
   @OneToMany(mappedBy = "appUser")
   private List<Link> links;
+
+  @OneToMany(mappedBy = "appUser")
+  private List<Tag> tags;
 }
