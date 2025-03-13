@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class GuestLink {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
