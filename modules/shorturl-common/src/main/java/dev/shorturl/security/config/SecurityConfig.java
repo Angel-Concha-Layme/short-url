@@ -35,7 +35,8 @@ public class SecurityConfig {
       "/configuration/security",
       "/swagger-ui/**",
       "/webjars/**",
-      "/swagger-ui.html"
+      "/swagger-ui.html",
+      "/api/guest-links"
   };
 
   private final JwtAuthenticationFilter jwtAuthFilter;
@@ -71,7 +72,9 @@ public class SecurityConfig {
         .oauth2Login(oauth -> oauth
             .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
             .successHandler(oauth2LoginSuccessHandler)
-        );
+        ).csrf(AbstractHttpConfigurer::disable)
+
+    ;
 
     return http.build();
   }
