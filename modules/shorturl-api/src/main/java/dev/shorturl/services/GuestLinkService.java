@@ -19,12 +19,12 @@ public class GuestLinkService {
   }
 
   public GuestLink createGuestLink(GuestlinkRequestDTO request) {
-    GuestLink guestLink = new GuestLink();
-    guestLink.setUrl(request.url());
-    guestLink.setSlug(this.slugService.generateSlug());
-    guestLink.setCreatedAt(LocalDateTime.now());
-    guestLink.setExpiresAt(LocalDateTime.now().plusDays(7));
-
+    GuestLink guestLink = GuestLink.builder()
+        .url(request.url())
+        .slug(this.slugService.generateSlug())
+        .createdAt(LocalDateTime.now())
+        .expiresAt(LocalDateTime.now().plusDays(7))
+        .build();
 
     return this.guestLinkRepository.save(guestLink);
   }
