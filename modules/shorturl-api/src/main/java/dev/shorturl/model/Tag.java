@@ -24,4 +24,7 @@ public class Tag {
   @ManyToMany(mappedBy = "tags")
   private Set<Link> links;
 
+  @ManyToOne
+  @JoinColumn(name = "app_user_id")
+  private AppUser appUser;
 }
