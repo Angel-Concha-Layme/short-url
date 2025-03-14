@@ -6,12 +6,10 @@ import dev.shorturl.exception.TagNotFoundException;
 import dev.shorturl.model.AppUser;
 import dev.shorturl.model.Tag;
 import dev.shorturl.repository.TagRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TagService {
@@ -61,8 +59,7 @@ public class TagService {
 
   @Transactional
   public void deleteTag(Long id, AppUser user) {
-    Tag tag = tagRepository.findById(id)
-        .orElseThrow(() -> new TagNotFoundException(id));
+    Tag tag = tagRepository.findById(id).orElseThrow(() -> new TagNotFoundException(id));
 
     if (!tag.getAppUser().equals(user)) {
       throw new SecurityException("User not authorized to delete this tag");

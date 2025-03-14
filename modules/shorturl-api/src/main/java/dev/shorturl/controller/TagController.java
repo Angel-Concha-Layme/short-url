@@ -4,12 +4,11 @@ import dev.shorturl.dto.TagDTO;
 import dev.shorturl.security.SecurityContext;
 import dev.shorturl.services.TagService;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/tags")
@@ -41,7 +40,8 @@ public class TagController {
 
   @PutMapping("/{id}")
   @PreAuthorize("hasRole('ROLE_USER')")
-  public ResponseEntity<TagDTO> updateTag(@PathVariable Long id, @Valid @RequestBody TagDTO tagDTO) {
+  public ResponseEntity<TagDTO> updateTag(
+      @PathVariable Long id, @Valid @RequestBody TagDTO tagDTO) {
     return ResponseEntity.ok(tagService.updateTag(id, tagDTO, SecurityContext.getUserOrFail()));
   }
 

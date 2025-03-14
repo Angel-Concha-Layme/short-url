@@ -22,8 +22,10 @@ public class AppUserController {
   @PostMapping
   @RequestMapping("/change-password")
   @PreAuthorize("hasRole('ROLE_USER')")
-  public ResponseEntity<Boolean> changePassword(@RequestBody ChangePasswordRequestDTO changePasswordRequestDTO) {
-    return ResponseEntity.ok(appUserService.tryChangePassword(changePasswordRequestDTO, SecurityContext.getUserOrFail()));
+  public ResponseEntity<Boolean> changePassword(
+      @RequestBody ChangePasswordRequestDTO changePasswordRequestDTO) {
+    return ResponseEntity.ok(
+        appUserService.tryChangePassword(
+            changePasswordRequestDTO, SecurityContext.getUserOrFail()));
   }
-
 }

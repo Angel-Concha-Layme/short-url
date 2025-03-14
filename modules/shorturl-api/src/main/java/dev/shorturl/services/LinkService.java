@@ -8,13 +8,13 @@ import dev.shorturl.model.Link;
 import dev.shorturl.model.Tag;
 import dev.shorturl.repository.LinkRepository;
 import dev.shorturl.repository.TagRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LinkService {
@@ -22,7 +22,8 @@ public class LinkService {
   private final TagRepository tagRepository;
   private final SlugService slugService;
 
-  public LinkService(LinkRepository linkRepository, TagRepository tagRepository, SlugService slugService) {
+  public LinkService(
+      LinkRepository linkRepository, TagRepository tagRepository, SlugService slugService) {
     this.linkRepository = linkRepository;
     this.tagRepository = tagRepository;
     this.slugService = slugService;
@@ -30,22 +31,29 @@ public class LinkService {
 
   @Transactional
   public CompleteLinkDTO createLink(CompleteLinkRequestDTO completeLinRequestkDTO, AppUser user) {
-    List<Tag> tags = tagRepository.findAllById(completeLinRequestkDTO.tagsIds());
-    Link link = Link.builder()
-        .url(completeLinRequestkDTO.url())
-        .slug(slugService.generateSlug())
-        .createdAt(LocalDateTime.now())
-        .expiresAt(LocalDateTime.now().plusDays(30))
-        .description(completeLinRequestkDTO.description())
-        .tags(Set.copyOf(tags))
-        .appUser(user)
-        .build();
+    List<Tag> tags =
+        completeLinRequestkDTO.tagsIds().isEmpty()
+            ? Collections.emptyList()
+            : tagRepository.findAllById(completeLinRequestkDTO.tagsIds());
+    Link link =
+        Link.builder()
+            .url(completeLinRequestkDTO.url())
+            .slug(slugService.generateSlug())
+            .createdAt(LocalDateTime.now())
+            .expiresAt(LocalDateTime.now().plusDays(30))
+            .description(completeLinRequestkDTO.description())
+            .tags(Set.copyOf(tags))
+            .appUser(user)
+            .build();
     linkRepository.save(link);
     return CompleteLinkDTO.of(link);
   }
 
-  public CompleteLinkDTO getLinkById(Long id) {
-    Link link = linkRepository.findById(id).orElseThrow(() -> new LinkNotFoundException(id));
+  public CompleteLinkDTO getLinkById(Long id, AppUser user) {
+    Link link =
+        linkRepository
+            .findByIdAndAppUser(id, user)
+            .orElseThrow(() -> new LinkNotFoundException(id));
     return CompleteLinkDTO.of(link);
   }
 
@@ -53,11 +61,11 @@ public class LinkService {
     return linkRepository.findByAppUser(user).stream()
         .map(CompleteLinkDTO::of)
         .collect(Collectors.toList());
-
   }
 
   @Transactional
-  public CompleteLinkDTO updateLink(Long id, CompleteLinkRequestDTO completeLinkRequestDTO, AppUser user1) {
+  public CompleteLinkDTO updateLink(
+      Long id, CompleteLinkRequestDTO completeLinkRequestDTO, AppUser user1) {
     Link link = linkRepository.findById(id).orElseThrow(() -> new LinkNotFoundException(id));
     if (!link.getAppUser().equals(user1)) {
       throw new SecurityException("User not authorized to update this link");

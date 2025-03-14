@@ -1,10 +1,9 @@
 package dev.shorturl.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.Set;
+import lombok.*;
 
 @Entity
 @Table(name = "user_links")
@@ -29,8 +28,7 @@ public class Link {
   @JoinTable(
       name = "link_tags",
       joinColumns = @JoinColumn(name = "link_id"),
-      inverseJoinColumns = @JoinColumn(name = "tag_id")
-  )
+      inverseJoinColumns = @JoinColumn(name = "tag_id"))
   private Set<Tag> tags;
 
   @ManyToOne

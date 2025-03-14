@@ -1,8 +1,8 @@
 package dev.shorturl.controller;
 
-import dev.shorturl.security.dto.ChangePasswordRequestDTO;
 import dev.shorturl.security.dto.AuthenticationRequestDTO;
 import dev.shorturl.security.dto.AuthenticationResponseDTO;
+import dev.shorturl.security.dto.ChangePasswordRequestDTO;
 import dev.shorturl.security.dto.RegisterRequestDTO;
 import dev.shorturl.services.AuthService;
 import jakarta.annotation.security.PermitAll;
@@ -24,18 +24,21 @@ public class AuthController {
 
   @PostMapping("/register")
   @PermitAll
-  public ResponseEntity<AuthenticationResponseDTO> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
+  public ResponseEntity<AuthenticationResponseDTO> register(
+      @RequestBody RegisterRequestDTO registerRequestDTO) {
     return ResponseEntity.ok(this.authservice.register(registerRequestDTO));
   }
 
   @PostMapping("/authenticate")
-  public ResponseEntity<AuthenticationResponseDTO> authenticate(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
+  public ResponseEntity<AuthenticationResponseDTO> authenticate(
+      @RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
     return ResponseEntity.ok(this.authservice.authenticate(authenticationRequestDTO));
   }
 
   @PostMapping("/change-password")
   @PreAuthorize("hasRole('ROLE_USER')")
-  public ResponseEntity<Boolean> changePassword(@RequestBody ChangePasswordRequestDTO changePasswordRequestDTO) {
+  public ResponseEntity<Boolean> changePassword(
+      @RequestBody ChangePasswordRequestDTO changePasswordRequestDTO) {
     return ResponseEntity.ok(this.authservice.changePassword(changePasswordRequestDTO));
   }
 }

@@ -2,7 +2,6 @@ package dev.shorturl.dto.link;
 
 import dev.shorturl.dto.TagDTO;
 import dev.shorturl.model.Link;
-
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,8 +14,7 @@ public record CompleteLinkDTO(
     Integer clicks,
     LocalDateTime createdAt,
     LocalDateTime expiresAt,
-    Set<TagDTO> tags
-) {
+    Set<TagDTO> tags) {
 
   public static CompleteLinkDTO of(Link savedLink) {
     return new CompleteLinkDTO(
@@ -31,8 +29,6 @@ public record CompleteLinkDTO(
             ? savedLink.getTags().stream()
                 .map(tag -> new TagDTO(tag.getName(), tag.getColor()))
                 .collect(Collectors.toSet())
-            : Set.of()
-
-    );
+            : Set.of());
   }
 }

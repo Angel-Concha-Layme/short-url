@@ -109,6 +109,19 @@
             <artifactId>jjwt-jackson</artifactId>
             <version>0.11.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.8.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.14</version>
+        </dependency>
+
+
     </dependencies>
 
     <dependencyManagement>
@@ -123,7 +136,7 @@
     </dependencyManagement>
 
 
-    <build>
+<build>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -138,6 +151,7 @@
                         </annotationProcessorPaths>
                     </configuration>
                 </plugin>
+
                 <plugin>
                     <groupId>org.asciidoctor</groupId>
                     <artifactId>asciidoctor-maven-plugin</artifactId>
@@ -163,6 +177,7 @@
                         </dependency>
                     </dependencies>
                 </plugin>
+
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
@@ -175,6 +190,26 @@
                         </excludes>
                     </configuration>
                 </plugin>
+
+                <!-- Spotless Plugin -->
+                <plugin>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>2.42.0</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>apply</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <java>
+                            <googleJavaFormat/>
+                        </java>
+                    </configuration>
+                </plugin>
+
             </plugins>
         </pluginManagement>
     </build>

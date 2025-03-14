@@ -1,10 +1,10 @@
 package dev.shorturl.services;
 
-import dev.shorturl.security.dto.ChangePasswordRequestDTO;
 import dev.shorturl.model.AppUser;
 import dev.shorturl.repository.AppUserRepository;
 import dev.shorturl.security.dto.AuthenticationRequestDTO;
 import dev.shorturl.security.dto.AuthenticationResponseDTO;
+import dev.shorturl.security.dto.ChangePasswordRequestDTO;
 import dev.shorturl.security.dto.RegisterRequestDTO;
 import dev.shorturl.security.model.User;
 import dev.shorturl.security.repository.UserRepository;
@@ -14,7 +14,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class AuthService {
@@ -26,7 +25,13 @@ public class AuthService {
   private final TokenService tokenService;
   private final AppUserRepository appUserRepository;
 
-  public AuthService(UserRepository userRepository, JWTService jwtService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, TokenService tokenService, AppUserRepository appUserRepository) {
+  public AuthService(
+      UserRepository userRepository,
+      JWTService jwtService,
+      AuthenticationManager authenticationManager,
+      PasswordEncoder passwordEncoder,
+      TokenService tokenService,
+      AppUserRepository appUserRepository) {
     this.userRepository = userRepository;
     this.jwtService = jwtService;
     this.authenticationManager = authenticationManager;
@@ -61,12 +66,8 @@ public class AuthService {
   public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO authenticationRequestDTO) {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
-            authenticationRequestDTO.email(),
-            authenticationRequestDTO.password()
-        )
-    );
-    var user = userRepository.findByEmail(authenticationRequestDTO.email())
-        .orElseThrow();
+            authenticationRequestDTO.email(), authenticationRequestDTO.password()));
+    var user = userRepository.findByEmail(authenticationRequestDTO.email()).orElseThrow();
 
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
@@ -77,8 +78,7 @@ public class AuthService {
   }
 
   public Boolean changePassword(ChangePasswordRequestDTO changePasswordRequestDTO) {
-    var user = userRepository.findByEmail(changePasswordRequestDTO.email())
-        .orElseThrow();
+    var user = userRepository.findByEmail(changePasswordRequestDTO.email()).orElseThrow();
 
     if (!passwordEncoder.matches(changePasswordRequestDTO.oldPassword(), user.getPassword())) {
       throw new RuntimeException("Invalid old password");

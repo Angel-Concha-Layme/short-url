@@ -11,14 +11,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class SecurityContext {
 
-  @Setter
-  private static AppUserRepository appUserRepository;
+  @Setter private static AppUserRepository appUserRepository;
 
   public static AppUser getUserOrFail() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    if (authentication == null || !authentication.isAuthenticated() ||
-        !(authentication.getPrincipal() instanceof User securityUser)) {
+    if (authentication == null
+        || !authentication.isAuthenticated()
+        || !(authentication.getPrincipal() instanceof User securityUser)) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authenticated");
     }
 
@@ -26,7 +26,9 @@ public class SecurityContext {
       throw new IllegalStateException("AppUserRepository has not been initialized");
     }
 
-    return appUserRepository.findBySecurityUser(securityUser)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "AppUser not found"));
+    return appUserRepository
+        .findBySecurityUser(securityUser)
+        .orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "AppUser not found"));
   }
 }

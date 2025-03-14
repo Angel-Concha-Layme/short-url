@@ -1,13 +1,12 @@
 package dev.shorturl.security.model;
 
 import dev.shorturl.security.config.Permission;
-import lombok.Getter;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.Getter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Getter
 public enum Role {
@@ -17,9 +16,7 @@ public enum Role {
           Permission.ADMIN_READ,
           Permission.ADMIN_UPDATE,
           Permission.ADMIN_DELETE,
-          Permission.ADMIN_CREATE
-      )
-  )  ;
+          Permission.ADMIN_CREATE));
 
   private final Set<Permission> permissions;
 
@@ -28,10 +25,10 @@ public enum Role {
   }
 
   public List<SimpleGrantedAuthority> getAuthorities() {
-    List<SimpleGrantedAuthority> authorities = getPermissions()
-        .stream()
-        .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
-        .collect(Collectors.toList());
+    List<SimpleGrantedAuthority> authorities =
+        getPermissions().stream()
+            .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+            .collect(Collectors.toList());
 
     authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
     return authorities;

@@ -16,12 +16,10 @@ import dev.shorturl.security.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
-
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -43,7 +41,15 @@ public class CustomOAuth2LoginSuccessHandlerService implements AuthenticationSuc
   private final OAuthSessionsRepository oAuthSessionsRepository;
   private final OAuth2AuthorizedClientService authorizedClientService;
 
-  public CustomOAuth2LoginSuccessHandlerService(JWTService jwtService, UserRepository userRepository, PasswordEncoder passwordEncoder, TokenService tokenService, ObjectMapper jacksonObjectMapper, AppUserRepository appUserRepository, OAuthSessionsRepository oAuthSessionsRepository, OAuth2AuthorizedClientService authorizedClientService) {
+  public CustomOAuth2LoginSuccessHandlerService(
+      JWTService jwtService,
+      UserRepository userRepository,
+      PasswordEncoder passwordEncoder,
+      TokenService tokenService,
+      ObjectMapper jacksonObjectMapper,
+      AppUserRepository appUserRepository,
+      OAuthSessionsRepository oAuthSessionsRepository,
+      OAuth2AuthorizedClientService authorizedClientService) {
     this.jwtService = jwtService;
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
@@ -56,7 +62,9 @@ public class CustomOAuth2LoginSuccessHandlerService implements AuthenticationSuc
 
   @Transactional
   @Override
-  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+  public void onAuthenticationSuccess(
+      HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+      throws IOException {
 
     OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
     OAuth2User oAuth2User = oauthToken.getPrincipal();
@@ -69,8 +77,7 @@ public class CustomOAuth2LoginSuccessHandlerService implements AuthenticationSuc
 
   private User getOrCreateUser(OAuth2User oAuth2User) {
     String email = (String) oAuth2User.getAttributes().get("email");
-    return userRepository.findByEmail(email)
-        .orElseGet(() -> createNewUser(oAuth2User, email));
+    return userRepository.findByEmail(email).orElseGet(() -> createNewUser(oAuth2User, email));
   }
 
   private User createNewUser(OAuth2User oAuth2User, String email) {
@@ -106,28 +113,36 @@ public class CustomOAuth2LoginSuccessHandlerService implements AuthenticationSuc
     return new AuthenticationResponseDTO(jwtToken, refreshToken);
   }
 
-  private void processOAuthSession(OAuth2AuthenticationToken oauthToken, OAuth2User oAuth2User, User user) {
+  private void processOAuthSession(
+      OAuth2AuthenticationToken oauthToken, OAuth2User oAuth2User, User user) {
     String providerId = oauthToken.getAuthorizedClientRegistrationId();
     Provider provider = Provider.valueOf(providerId.toUpperCase());
 
-    OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
-        providerId, oauthToken.getName());
+    OAuth2AuthorizedClient client =
+        authorizedClientService.loadAuthorizedClient(providerId, oauthToken.getName());
 
-    String accessToken = client != null && client.getAccessToken() != null
-        ? client.getAccessToken().getTokenValue() : null;
-    Instant expiresAt = client != null && client.getAccessToken() != null
-        ? client.getAccessToken().getExpiresAt() : null;
+    String accessToken =
+        client != null && client.getAccessToken() != null
+            ? client.getAccessToken().getTokenValue()
+            : null;
+    Instant expiresAt =
+        client != null && client.getAccessToken() != null
+            ? client.getAccessToken().getExpiresAt()
+            : null;
 
     String providerUserId = String.valueOf(oAuth2User.getAttributes().get("id"));
-    Optional<OAuthSessions> existingSessionOpt = oAuthSessionsRepository.findByProviderUserIdAndProvider(providerUserId, provider);
+    Optional<OAuthSessions> existingSessionOpt =
+        oAuthSessionsRepository.findByProviderUserIdAndProvider(providerUserId, provider);
 
-    OAuthSessions session = existingSessionOpt.orElseGet(() -> {
-      OAuthSessions newSession = new OAuthSessions();
-      newSession.setUser(user);
-      newSession.setProviderUserId(providerUserId);
-      newSession.setProvider(provider);
-      return newSession;
-    });
+    OAuthSessions session =
+        existingSessionOpt.orElseGet(
+            () -> {
+              OAuthSessions newSession = new OAuthSessions();
+              newSession.setUser(user);
+              newSession.setProviderUserId(providerUserId);
+              newSession.setProvider(provider);
+              return newSession;
+            });
 
     session.setAccessToken(accessToken);
     session.setExpiresAt(expiresAt);
@@ -135,7 +150,8 @@ public class CustomOAuth2LoginSuccessHandlerService implements AuthenticationSuc
     oAuthSessionsRepository.save(session);
   }
 
-  private void writeResponse(HttpServletResponse response, AuthenticationResponseDTO authResponse) throws IOException {
+  private void writeResponse(HttpServletResponse response, AuthenticationResponseDTO authResponse)
+      throws IOException {
     response.setContentType("application/json");
     String jsonResponse = jacksonObjectMapper.writeValueAsString(authResponse);
     response.getWriter().write(jsonResponse);

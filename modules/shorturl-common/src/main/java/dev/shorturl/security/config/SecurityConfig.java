@@ -1,6 +1,7 @@
 package dev.shorturl.security.config;
 
 import dev.shorturl.security.service.CustomOAuth2UserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,38 +20,42 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
   private static final String[] WHITE_LIST_URL = {
-      "/",
-      "/api/auth/**",
-      "/swagger-resources",
-      "/swagger-resources/**",
-      "/configuration/ui",
-      "/configuration/security",
-      "/swagger-ui/**",
-      "/webjars/**",
-      "/swagger-ui.html",
-      "/api/guest-links"
+    "/",
+    "/api/auth/**",
+    "/swagger-resources",
+    "/swagger-resources/**",
+    "/configuration/ui",
+    "/configuration/security",
+    "/swagger-ui/**",
+    "/webjars/**",
+    "/swagger-ui.html",
+    "/v3/api-docs/**",
+    "/v3/api-docs.yaml",
+    "/api-docs/**",
+    "/api-docs.yaml",
+    "/api/guest-links"
   };
 
   private final JwtAuthenticationFilter jwtAuthFilter;
   private final LogoutHandler logoutHandler;
   private final CustomOAuth2UserService customOAuth2UserService;
-  private final @Qualifier("customOAuth2LoginSuccessHandler") AuthenticationSuccessHandler oauth2LoginSuccessHandler;
-  private final org.springframework.security.authentication.AuthenticationProvider authenticationProvider;
+  private final @Qualifier("customOAuth2LoginSuccessHandler") AuthenticationSuccessHandler
+      oauth2LoginSuccessHandler;
+  private final org.springframework.security.authentication.AuthenticationProvider
+      authenticationProvider;
 
   public SecurityConfig(
       JwtAuthenticationFilter jwtAuthFilter,
       LogoutHandler logoutHandler,
-      CustomOAuth2UserService customOAuth2UserService, AuthenticationSuccessHandler oauth2LoginSuccessHandler,
-      org.springframework.security.authentication.AuthenticationProvider authenticationProvider
-  ) {
+      CustomOAuth2UserService customOAuth2UserService,
+      AuthenticationSuccessHandler oauth2LoginSuccessHandler,
+      org.springframework.security.authentication.AuthenticationProvider authenticationProvider) {
     this.jwtAuthFilter = jwtAuthFilter;
     this.logoutHandler = logoutHandler;
     this.customOAuth2UserService = customOAuth2UserService;
@@ -61,20 +66,19 @@ public class SecurityConfig {
   @Bean
   @Order(1)
   public SecurityFilterChain oauthSecurityFilterChain(HttpSecurity http) throws Exception {
-    http
-        .securityMatcher("/oauth2/**", "/login/oauth2/**", "/api/oauth/**")
+    http.securityMatcher("/oauth2/**", "/login/oauth2/**", "/api/oauth/**")
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(auth -> auth
-            .anyRequest().authenticated()
-        )
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .oauth2Login(oauth -> oauth
-            .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
-            .successHandler(oauth2LoginSuccessHandler)
-        ).csrf(AbstractHttpConfigurer::disable)
-
-    ;
+        .authorizeHttpRequests(
+            auth -> auth.requestMatchers(WHITE_LIST_URL).permitAll().anyRequest().permitAll())
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .oauth2Login(
+            oauth ->
+                oauth
+                    .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                    .successHandler(oauth2LoginSuccessHandler))
+        .csrf(AbstractHttpConfigurer::disable);
 
     return http.build();
   }
@@ -82,27 +86,25 @@ public class SecurityConfig {
   @Bean
   @Order(2)
   public SecurityFilterChain jwtSecurityFilterChain(HttpSecurity http) throws Exception {
-    http
-        .securityMatcher("/**")
+    http.securityMatcher("/**")
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers(WHITE_LIST_URL).permitAll()
-            .anyRequest().authenticated()
-        )
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(
+            auth -> auth.requestMatchers(WHITE_LIST_URL).permitAll().anyRequest().permitAll())
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-        .logout(logout -> logout
-            .logoutUrl("/api/v1/auth/logout")
-            .addLogoutHandler(logoutHandler)
-            .logoutSuccessHandler((request, response, authentication) ->
-                SecurityContextHolder.clearContext()
-            )
-        );
+        .logout(
+            logout ->
+                logout
+                    .logoutUrl("/api/v1/auth/logout")
+                    .addLogoutHandler(logoutHandler)
+                    .logoutSuccessHandler(
+                        (request, response, authentication) ->
+                            SecurityContextHolder.clearContext()));
     return http.build();
   }
-
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
@@ -116,5 +118,4 @@ public class SecurityConfig {
     source.registerCorsConfiguration("/**", config);
     return source;
   }
-
 }

@@ -2,11 +2,10 @@ package dev.shorturl.repository;
 
 import dev.shorturl.model.AppUser;
 import dev.shorturl.security.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
-    Optional<AppUser> findBySecurityUser(User securityUser);
+  Optional<AppUser> findBySecurityUser(User securityUser);
 }

@@ -1,4 +1,3 @@
 package dev.shorturl.dto.link;
 
-public record LinkRequestDTO() {
-}
+public record LinkRequestDTO() {}

@@ -13,21 +13,21 @@ import lombok.Setter;
 @Entity
 @Table(name = "token")
 public class Token {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    @Column(unique = true)
-    private String token;
+  @Column(unique = true)
+  private String token;
 
-    @Enumerated(EnumType.STRING)
-    private TokenType tokenType = TokenType.BEARER;
+  @Enumerated(EnumType.STRING)
+  private TokenType tokenType = TokenType.BEARER;
 
-    private boolean revoked;
+  private boolean revoked;
 
-    private boolean expired;
+  private boolean expired;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
 }

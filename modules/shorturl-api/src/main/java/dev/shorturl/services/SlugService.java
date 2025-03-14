@@ -1,10 +1,9 @@
 package dev.shorturl.services;
 
 import dev.shorturl.repository.GuestLinkRepository;
+import java.util.Random;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.Random;
 
 @Service
 public class SlugService {
@@ -12,9 +11,10 @@ public class SlugService {
   private final long rangeEnd;
   private final GuestLinkRepository guestLinkRepository;
 
-  public SlugService(@Value("${slug.range.start}") long rangeStart,
-                     @Value("${slug.range.end}") long rangeEnd,
-                     GuestLinkRepository guestLinkRepository) {
+  public SlugService(
+      @Value("${slug.range.start}") long rangeStart,
+      @Value("${slug.range.end}") long rangeEnd,
+      GuestLinkRepository guestLinkRepository) {
     this.rangeStart = rangeStart;
     this.rangeEnd = rangeEnd;
     this.guestLinkRepository = guestLinkRepository;

@@ -15,7 +15,8 @@ public class AppUserService {
   }
 
   @Transactional
-  public Boolean tryChangePassword(ChangePasswordRequestDTO changePasswordRequestDTO, AppUser user) {
+  public Boolean tryChangePassword(
+      ChangePasswordRequestDTO changePasswordRequestDTO, AppUser user) {
     if (!user.getSecurityUser().getPassword().equals(changePasswordRequestDTO.oldPassword())) {
       return false;
     }
