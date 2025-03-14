@@ -70,7 +70,7 @@ public class SecurityConfig {
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(
-            auth -> auth.requestMatchers(WHITE_LIST_URL).permitAll().anyRequest().permitAll())
+            auth -> auth.requestMatchers(WHITE_LIST_URL).permitAll().anyRequest().authenticated())
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .oauth2Login(
@@ -90,7 +90,7 @@ public class SecurityConfig {
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(
-            auth -> auth.requestMatchers(WHITE_LIST_URL).permitAll().anyRequest().permitAll())
+            auth -> auth.requestMatchers(WHITE_LIST_URL).permitAll().anyRequest().authenticated())
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authenticationProvider(authenticationProvider)
